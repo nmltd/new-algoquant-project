@@ -17,14 +17,14 @@
     <repositories>
         <repository>
             <id>github-algoquant</id>
-            <url>https://maven.pkg.github.com/nmltd/algoquant</url>
+            <url>https://maven.pkg.github.com/nmltd/maven-packages</url>
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>tech.nmfin</groupId>
-            <artifactId>algoquant</artifactId>
+            <artifactId>algoquant-dist</artifactId>
             <version>${algoquant.version}</version>
         </dependency>
     </dependencies>

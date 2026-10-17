@@ -27,19 +27,19 @@ jobs:
           java-version: '8'
           server-id: github-algoquant
           server-username: GITHUB_ACTOR
-          server-password: NM_PACKAGES_TOKEN
+          server-password: GITHUB_TOKEN
       - name: Check AlgoQuant package access
         env:
-          NM_PACKAGES_TOKEN: ${{ secrets.NM_PACKAGES_TOKEN || secrets.NM_REPOSITORIES_TOKEN || github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          status=$(curl --silent --show-error --location --output "$RUNNER_TEMP/algoquant-metadata.xml" --write-out '%{http_code}' --user "$GITHUB_ACTOR:$NM_PACKAGES_TOKEN" https://maven.pkg.github.com/nmltd/algoquant/tech/nmfin/algoquant/3.3.0-SNAPSHOT/maven-metadata.xml)
+          status=$(curl --silent --show-error --location --output "$RUNNER_TEMP/algoquant-metadata.xml" --write-out '%{http_code}' --user "$GITHUB_ACTOR:$GITHUB_TOKEN" https://maven.pkg.github.com/nmltd/maven-packages/tech/nmfin/algoquant-dist/3.3.0-SNAPSHOT/maven-metadata.xml)
           if [ "$status" != 200 ]; then
-            echo "::error::AlgoQuant package access failed (HTTP $status). Grant nmltd/new-algoquant-project Actions read access to the AlgoQuant package, or add NM_PACKAGES_TOKEN / NM_REPOSITORIES_TOKEN with read:packages and access to nmltd/algoquant in this repository's Actions secrets."
+            echo "::error::AlgoQuant package access failed (HTTP $status). Check the public package publication and packages:read workflow permission; no internal token or private repository access is required."
             exit 1
           fi
       - name: Download AlgoQuant from an empty Maven cache, build and run
         env:
-          NM_PACKAGES_TOKEN: ${{ secrets.NM_PACKAGES_TOKEN || secrets.NM_REPOSITORIES_TOKEN || github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: mvn -B -ntp -U -Dmaven.repo.local="$RUNNER_TEMP/m2" clean verify exec:java
       - name: Run the packaged application
         run: java -jar target/new-algoquant-project-0.0.1-SNAPSHOT.jar license/nm.lic

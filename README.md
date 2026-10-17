@@ -1,11 +1,11 @@
 # New AlgoQuant Project
 
-A minimal Java 8 Maven application using the published **tech.nmfin:algoquant:3.3.0-SNAPSHOT** combined, obfuscated JAR. It downloads AlgoQuant from GitHub Packages; it does not build AlgoQuant from source. NM Dev and the other runtime libraries are already bundled in that dependency.
+A minimal Java 8 Maven application using the published **tech.nmfin:algoquant-dist:3.3.0-SNAPSHOT** combined, obfuscated JAR. It downloads AlgoQuant from GitHub Packages; it does not build AlgoQuant from source. NM Dev and the other runtime libraries are already bundled in that dependency.
 
 ## Requirements
 
 - JDK 8 and Maven 3.9.9.
-- A GitHub account with access to the AlgoQuant package and a personal access token **(classic)** with `read:packages`.
+- A GitHub account and your own personal access token **(classic)** with `read:packages`.
 - A valid NM license. This starter already contains the supplied license at `license/nm.lic`; replace it with your own when needed.
 
 ## Configure Maven authentication
@@ -24,7 +24,7 @@ Create or update `~/.m2/settings.xml` (Windows: `%USERPROFILE%\\.m2\\settings.xm
 </settings>
 ```
 
-Merge the server entry into an existing settings file if you already have one. Keep your token outside the repository. Authentication must use the same server ID as the repository in `pom.xml`. For a 401/403 response, check both the token and your account's package access.
+Merge the server entry into an existing settings file if you already have one. Keep your token outside the repository. Authentication must use the same server ID as the repository in `pom.xml`. For a 401/403 response, check your token and its read:packages scope. No access to the private source repository is needed.
 
 ## Build and run
 
@@ -54,8 +54,8 @@ Keep `target/lib/` beside the application JAR. The final argument is the license
 
 ## Continuous integration
 
-GitHub Actions downloads dependencies into a fresh Maven cache, compiles the example, executes its result checks, and runs the packaged JAR. It uses `NM_PACKAGES_TOKEN`, then `NM_REPOSITORIES_TOKEN`, then the built-in `GITHUB_TOKEN`. When using the built-in token, grant this repository Actions access to the AlgoQuant package in its package settings. A fork needs its own authorized package credentials.
+GitHub Actions uses only its built-in `GITHUB_TOKEN` with `packages: read`. No NM internal secrets or private source repository access are required. CI checks public package metadata, downloads into an empty Maven cache, compiles and runs the example, and runs the packaged JAR.
+
+The public distribution is hosted at https://maven.pkg.github.com/nmltd/maven-packages. Its artifact ID is `algoquant-dist`; Java package names are unchanged.
 
 [AlgoQuant Javadoc](https://nmltd.github.io/algoquant/)
-
-Repository owners: configure the token under [Settings → Secrets and variables → Actions](https://github.com/nmltd/new-algoquant-project/settings/secrets/actions), or grant this repository access under the AlgoQuant package's **Package settings → Manage Actions access → Add repository**. The workflow checks metadata access before attempting the build.
