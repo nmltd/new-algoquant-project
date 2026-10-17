@@ -28,6 +28,15 @@ jobs:
           server-id: github-algoquant
           server-username: GITHUB_ACTOR
           server-password: NM_PACKAGES_TOKEN
+      - name: Check AlgoQuant package access
+        env:
+          NM_PACKAGES_TOKEN: ${{ secrets.NM_PACKAGES_TOKEN || secrets.NM_REPOSITORIES_TOKEN || github.token }}
+        run: |
+          status=$(curl --silent --show-error --location --output "$RUNNER_TEMP/algoquant-metadata.xml" --write-out '%{http_code}' --user "$GITHUB_ACTOR:$NM_PACKAGES_TOKEN" https://maven.pkg.github.com/nmltd/algoquant/tech/nmfin/algoquant/3.3.0-SNAPSHOT/maven-metadata.xml)
+          if [ "$status" != 200 ]; then
+            echo "::error::AlgoQuant package access failed (HTTP $status). Grant nmltd/new-algoquant-project Actions read access to the AlgoQuant package, or add NM_PACKAGES_TOKEN / NM_REPOSITORIES_TOKEN with read:packages and access to nmltd/algoquant in this repository's Actions secrets."
+            exit 1
+          fi
       - name: Download AlgoQuant from an empty Maven cache, build and run
         env:
           NM_PACKAGES_TOKEN: ${{ secrets.NM_PACKAGES_TOKEN || secrets.NM_REPOSITORIES_TOKEN || github.token }}

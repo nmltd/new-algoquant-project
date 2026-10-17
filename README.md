@@ -57,3 +57,5 @@ Keep `target/lib/` beside the application JAR. The final argument is the license
 GitHub Actions downloads dependencies into a fresh Maven cache, compiles the example, executes its result checks, and runs the packaged JAR. It uses `NM_PACKAGES_TOKEN`, then `NM_REPOSITORIES_TOKEN`, then the built-in `GITHUB_TOKEN`. When using the built-in token, grant this repository Actions access to the AlgoQuant package in its package settings. A fork needs its own authorized package credentials.
 
 [AlgoQuant Javadoc](https://nmltd.github.io/algoquant/)
+
+Repository owners: configure the token under [Settings → Secrets and variables → Actions](https://github.com/nmltd/new-algoquant-project/settings/secrets/actions), or grant this repository access under the AlgoQuant package's **Package settings → Manage Actions access → Add repository**. The workflow checks metadata access before attempting the build.
