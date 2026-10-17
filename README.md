@@ -59,3 +59,5 @@ GitHub Actions uses only its built-in `GITHUB_TOKEN` with `packages: read`. No N
 The public distribution is hosted at https://maven.pkg.github.com/nmltd/maven-packages. Its artifact ID is `algoquant-dist`; Java package names are unchanged.
 
 [AlgoQuant Javadoc](https://nmltd.github.io/algoquant/)
+
+For runnable technical-analysis strategies and backtests, see [algoquant-examples](https://github.com/nmltd/algoquant-examples). It includes six examples with offline synthetic data, optional Yahoo downloads and optional charts.
