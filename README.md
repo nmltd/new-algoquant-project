@@ -50,7 +50,7 @@ You can also run the packaged application:
 java -jar target/new-algoquant-project-0.0.1-SNAPSHOT.jar license/nm.lic
 ```
 
-Keep `target/lib/` beside the application JAR. The second argument is the license path, so you can supply an absolute path when running from another directory.
+Keep `target/lib/` beside the application JAR. The final argument is the license path, so you can supply an absolute path when running from another directory.
 
 ## Continuous integration
 
