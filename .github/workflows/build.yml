@@ -1,0 +1,30 @@
+name: Download, build and run
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          server-id: github-algoquant
+          server-username: GITHUB_ACTOR
+          server-password: NM_PACKAGES_TOKEN
+      - name: Download AlgoQuant from an empty Maven cache, build and run
+        env:
+          NM_PACKAGES_TOKEN: ${{ secrets.NM_PACKAGES_TOKEN || secrets.NM_REPOSITORIES_TOKEN || github.token }}
+        run: mvn -B -ntp -U -Dmaven.repo.local="$RUNNER_TEMP/m2" clean verify exec:java
+      - name: Run the packaged application
+        run: java -jar target/new-algoquant-project-0.0.1-SNAPSHOT.jar license/nm.lic
